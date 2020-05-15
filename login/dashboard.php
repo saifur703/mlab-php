@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['email']) && !isset($_COOKIE['email'])) {
     header("location: index.php");
 }
 ?>
@@ -26,8 +26,8 @@ if (!isset($_SESSION['email'])) {
             <div class="column">
                 <h1>Welcome to Dashboard</h1>
 
-                <p>Your Email is: <?php echo $_SESSION['email']; ?></p>
-
+                <p>Your Email is: <?php echo isset($_SESSION['email']) ? $_SESSION['email'] : NULL; ?></p>
+                <p>Cookie: <?php echo isset($_COOKIE['email']) ? $_COOKIE['email'] : NULL; ?></p>
 
                 <a href="logout.php">Logout</a>
             </div>

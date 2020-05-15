@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (isset($_SESSION['email'])) {
-    header("location: dashboard.php");
+if (isset($_SESSION['email']) || isset($_COOKIE['email'])) {
+    header("location: ./dashboard.php");
 }
 
 if (isset($_POST['login'])) {
@@ -10,11 +10,14 @@ if (isset($_POST['login'])) {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
-
+    $check = isset($_POST['check']) ? $_POST['check'] : NULL;
     if ($email == EMAIL) {
         if ($password == PASSWORD) {
             $_SESSION['email'] = $email;
 
+            if (isset($check)) {
+                setcookie('email', $email, time() + (86400 * 30)); // 86400 = 1 day; 
+            }
             header("location: dashboard.php");
         } else {
             $pass = "<p style='color: red;'>Password is not matching. Please Try again</p>";
@@ -59,7 +62,11 @@ if (isset($_POST['login'])) {
                         <?php if ($password != PASSWORD) {
                             echo $pass;
                         } ?>
-                        <button class="button" name="login">Login</button>
+                        <div class="float-right">
+                            <input type="checkbox" name="check" id="check">
+                            <label for="check" class="label-inline">Accept Cookies</label>
+                        </div>
+                        <button class="button-primary" name="login">Login</button>
                     </form>
                 </div>
             </div>
